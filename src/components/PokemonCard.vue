@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import type { PokemonRes } from '../types';
 
 const props = defineProps<{ pokemon: PokemonRes, number: number }>()
-const imageUrl = `/images/${props.pokemon.name}.jpg`
+const imageUrl = `/vue-pokedex/images/${props.pokemon.name}.jpg`
 const backgroundColor = ref('rgba( 237, 238, 241, 0.4)')
 const borderColor = ref('rgba( 237, 238, 241, 0.7)')
 
