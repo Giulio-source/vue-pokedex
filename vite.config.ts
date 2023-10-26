@@ -6,7 +6,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: 'https://giulio-source.github.io/vue-pokedex/',
+  base: '/vue-pokedex',
   plugins: [
     vue(),
     vueJsx(),
