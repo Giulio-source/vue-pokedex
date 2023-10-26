@@ -23,9 +23,15 @@ pokemonStore.fetchAllPokemon()
 <style scoped lang="scss">
 .grid {
   margin-top: 32px;
+  margin-bottom: 100px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 8px;
   row-gap: 16px;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  }
 }
 </style>

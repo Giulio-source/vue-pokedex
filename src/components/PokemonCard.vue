@@ -4,8 +4,9 @@ import { ref } from 'vue';
 import type { PokemonRes } from '../types';
 
 const props = defineProps<{ pokemon: PokemonRes, number: number }>()
-const imageUrl = `https://img.pokemondb.net/artwork/large/${props.pokemon.name}.jpg`
+const imageUrl = `/images/${props.pokemon.name}.jpg`
 const backgroundColor = ref('rgba( 237, 238, 241, 0.4)')
+const borderColor = ref('rgba( 237, 238, 241, 0.7)')
 
 const fac = new FastAverageColor();
 fac.getColorAsync(imageUrl)
@@ -15,6 +16,11 @@ fac.getColorAsync(imageUrl)
             ${color.value[1]},
             ${color.value[2]},
             0.4)`
+        borderColor.value = `rgba(
+            ${color.value[0]},
+            ${color.value[1]},
+            ${color.value[2]},
+            0.7)`
     })
     .catch(e => {
         console.log(e);
@@ -32,14 +38,17 @@ fac.getColorAsync(imageUrl)
 
 <style scoped lang="scss">
 .pokemon-cell {
+    cursor: pointer;
     overflow: hidden;
     padding: 32px 16px;
     border-radius: 16px;
     background: v-bind(backgroundColor);
+    border: 2px solid transparent;
     display: flex;
     flex-direction: column;
     gap: 24px;
     position: relative;
+    transition: all 0.1s;
 
     &::before {
         content: url(/pokeball.svg);
@@ -50,6 +59,14 @@ fac.getColorAsync(imageUrl)
         right: -30px;
         bottom: -30px;
         transform: rotate(-15deg);
+    }
+
+    @media (hover:hover) {
+        &:hover {
+            transform: scale(1.05);
+            background: v-bind(backgroundColor);
+            border: 2px solid v-bind(backgroundColor);
+        }
     }
 }
 
