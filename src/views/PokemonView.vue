@@ -14,7 +14,7 @@ backgroundColor.value = `rgba(${computedColor},0.5)`;
 
 <template>
   <div class="wrapper">
-    <img width="200" :src="`/images/${pokemonName}.jpg`" alt="">
+    <img width="200" :src="imageUrl" :alt="pokemonName">
     <h1>{{ pokemonName }}</h1>
   </div>
 </template>
