@@ -29,6 +29,8 @@ html,
 body {
   font-family: "Barlow Condensed", sans-serif;
   overflow-x: hidden;
+  max-height: 100vh;
+  max-height: 100svh;
 }
 
 h1 {

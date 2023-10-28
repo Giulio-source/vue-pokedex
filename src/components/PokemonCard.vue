@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getAverageColorFromImage, getPokemonImageUrl } from '@/utils';
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import { usePokemonColor } from '../composables/usePokemonColor';
 import type { PokemonRes } from '../types';
@@ -15,11 +15,13 @@ if (!pokemonColors[props.pokemon.name]) {
     addColor(props.pokemon.name, `rgba(${computedColor}, 0.4)`)
 }
 
+const backgroundColor = computed(() => pokemonColors[props.pokemon.name])
+
 </script>
 
 <template>
     <RouterLink :to="`/pokemon/${pokemon.name}`">
-        <div :style="{ background: pokemonColors[props.pokemon.name] }" class="pokemon-cell">
+        <div class="pokemon-cell" :style="{ background: backgroundColor }">
             <p class="name">{{ pokemon.name }} <span>#{{ number }}</span></p>
             <img :src="imageUrl" :alt="pokemon.name">
         </div>
