@@ -9,13 +9,12 @@ const menuColor = computed(() => props.to === route.path ? '#4e4e4e' : '#ddd');
 </script>
 
 <template>
-    <div class="menu-item">
+    <RouterLink :to="to" class="menu-item">
         <slot name="icon"></slot>
-
         <p>
             <slot name="label"></slot>
         </p>
-    </div>
+    </RouterLink>
 </template>
 
 <style scoped lang="scss">
@@ -26,6 +25,7 @@ const menuColor = computed(() => props.to === route.path ? '#4e4e4e' : '#ddd');
     align-items: center;
     justify-content: center;
     gap: 8px;
+    transition: all 0.3s;
     color: v-bind(menuColor);
 
     p {

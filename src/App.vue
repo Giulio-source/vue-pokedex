@@ -16,8 +16,9 @@ import NavMenu from './components/NavMenu.vue';
       </nav>
     </div>
   </header> -->
-
-  <RouterView />
+  <Suspense>
+    <RouterView />
+  </Suspense>
   <NavMenu />
 </template>
 

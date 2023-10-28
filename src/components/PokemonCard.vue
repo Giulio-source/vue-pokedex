@@ -1,39 +1,28 @@
 <script setup lang="ts">
-import { FastAverageColor } from 'fast-average-color';
+import { getAverageColorFromImage, getPokemonImageUrl } from '@/utils';
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import type { PokemonRes } from '../types';
 
 const props = defineProps<{ pokemon: PokemonRes, number: number }>()
-const imageUrl = `/vue-pokedex/images/${props.pokemon.name}.jpg`
+const imageUrl = getPokemonImageUrl(props.pokemon.name)
 const backgroundColor = ref('rgba( 237, 238, 241, 0.4)')
 const borderColor = ref('rgba( 237, 238, 241, 0.7)')
 
-const fac = new FastAverageColor();
-fac.getColorAsync(imageUrl)
-    .then(color => {
-        backgroundColor.value = `rgba(
-            ${color.value[0]},
-            ${color.value[1]},
-            ${color.value[2]},
-            0.4)`
-        borderColor.value = `rgba(
-            ${color.value[0]},
-            ${color.value[1]},
-            ${color.value[2]},
-            0.7)`
-    })
-    .catch(e => {
-        console.log(e);
-    });
+const averageColor = await getAverageColorFromImage(imageUrl)
 
-
+const computedColor = averageColor.join(',');
+backgroundColor.value = `rgba(${computedColor},0.4)`
+borderColor.value = `rgba(${computedColor},0.7)`
 </script>
 
 <template>
-    <div class="pokemon-cell">
-        <p class="name">{{ pokemon.name }} <span>#{{ number }}</span></p>
-        <img :src="imageUrl" :alt="pokemon.name">
-    </div>
+    <RouterLink :to="`/pokemon/${pokemon.name}`">
+        <div class="pokemon-cell">
+            <p class="name">{{ pokemon.name }} <span>#{{ number }}</span></p>
+            <img :src="imageUrl" :alt="pokemon.name">
+        </div>
+    </RouterLink>
 </template>
 
 <style scoped lang="scss">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PokemonCard from '../components/PokemonCard.vue';
-import { usePokemonStore } from '../stores/pokemon';
+import { usePokemonStore } from '../stores/PokemonStore';
 
 const pokemonStore = usePokemonStore()
 
@@ -21,6 +21,9 @@ pokemonStore.fetchAllPokemon()
 </template>
 
 <style scoped lang="scss">
+main {
+  padding: 2rem;
+}
 .grid {
   margin-top: 32px;
   margin-bottom: 100px;
