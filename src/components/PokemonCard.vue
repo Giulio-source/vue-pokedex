@@ -2,23 +2,24 @@
 import { getAverageColorFromImage, getPokemonImageUrl } from '@/utils';
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import { usePokemonColor } from '../composables/usePokemonColor';
 import type { PokemonRes } from '../types';
 
 const props = defineProps<{ pokemon: PokemonRes, number: number }>()
+const { pokemonColors, addColor } = usePokemonColor()
 const imageUrl = getPokemonImageUrl(props.pokemon.name)
-const backgroundColor = ref('rgba( 237, 238, 241, 0.4)')
-const borderColor = ref('rgba( 237, 238, 241, 0.7)')
 
-const averageColor = await getAverageColorFromImage(imageUrl)
+if (!pokemonColors[props.pokemon.name]) {
+    const averageColor = await getAverageColorFromImage(imageUrl)
+    const computedColor = averageColor.join(', ');
+    addColor(props.pokemon.name, `rgba(${computedColor}, 0.4)`)
+}
 
-const computedColor = averageColor.join(',');
-backgroundColor.value = `rgba(${computedColor},0.4)`
-borderColor.value = `rgba(${computedColor},0.7)`
 </script>
 
 <template>
     <RouterLink :to="`/pokemon/${pokemon.name}`">
-        <div class="pokemon-cell">
+        <div :style="{ background: pokemonColors[props.pokemon.name] }" class="pokemon-cell">
             <p class="name">{{ pokemon.name }} <span>#{{ number }}</span></p>
             <img :src="imageUrl" :alt="pokemon.name">
         </div>
@@ -31,7 +32,6 @@ borderColor.value = `rgba(${computedColor},0.7)`
     overflow: hidden;
     padding: 32px 16px;
     border-radius: 16px;
-    background: v-bind(backgroundColor);
     border: 2px solid transparent;
     display: flex;
     flex-direction: column;
@@ -53,8 +53,6 @@ borderColor.value = `rgba(${computedColor},0.7)`
     @media (hover:hover) {
         &:hover {
             transform: scale(1.05);
-            background: v-bind(backgroundColor);
-            border: 2px solid v-bind(backgroundColor);
         }
     }
 }

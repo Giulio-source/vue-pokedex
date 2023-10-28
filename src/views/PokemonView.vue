@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getAverageColorFromImage, getPokemonImageUrl } from '../utils';
+import { usePokemonColor } from '../composables/usePokemonColor';
+import { getPokemonImageUrl } from '../utils';
 
 const route = useRoute()
-const backgroundColor = ref('rgba( 237, 238, 241, 0.4)')
+
 const pokemonName = typeof route.params.pokemon === 'string' ? route.params.pokemon : route.params.pokemon[0]
 const imageUrl = getPokemonImageUrl(pokemonName)
-const averageColor = await getAverageColorFromImage(imageUrl)
-const computedColor = averageColor.join(',');
-backgroundColor.value = `rgba(${computedColor},0.5)`;
+const { pokemonColors } = usePokemonColor()
+
+const computedColor = pokemonColors[pokemonName];
+const backgroundGradient = `linear-gradient(180deg, ${computedColor} 75%, rgba(255, 255, 255, 1) 100%) `;
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" :style="{ background: backgroundGradient }">
     <img width="200" :src="imageUrl" :alt="pokemonName">
     <h1>{{ pokemonName }}</h1>
   </div>
@@ -21,7 +22,6 @@ backgroundColor.value = `rgba(${computedColor},0.5)`;
 
 <style scoped lang="scss">
 .wrapper {
-  background: linear-gradient(180deg, v-bind(backgroundColor) 75%, rgba(255, 255, 255, 1) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
